@@ -3,6 +3,7 @@ package com.alexey.grizzly.math;
 import com.badlogic.gdx.math.Vector2;
 
 public class Rect {
+
     public final Vector2 pos = new Vector2(); // позиция по центру
     protected float halfWidth; // половина ширины
     protected float halfHeight; // половина высоты
