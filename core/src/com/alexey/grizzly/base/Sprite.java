@@ -15,6 +15,10 @@ public class Sprite extends Rect {
         regions = new TextureRegion[1];
         regions[0] = region;
     }
+    public Sprite(TextureRegion region,int x, int y, int width, int height) {
+        regions = new TextureRegion[1];
+        regions[0] = new TextureRegion(region,x,y,width,height);
+    }
 
     /**
      * Установка размера изображения по высоте

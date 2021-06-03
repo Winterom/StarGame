@@ -3,9 +3,11 @@ package com.alexey.grizzly.screen;
 import com.alexey.grizzly.base.BaseScreen;
 import com.alexey.grizzly.math.Rect;
 import com.alexey.grizzly.sprite.Background;
+import com.alexey.grizzly.sprite.MainShip;
 import com.alexey.grizzly.sprite.Star;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen extends BaseScreen {
@@ -16,6 +18,7 @@ public class GameScreen extends BaseScreen {
 
     private Background background;
     private Star[] stars;
+    private MainShip ship;
 
     @Override
     public void show() {
@@ -27,6 +30,7 @@ public class GameScreen extends BaseScreen {
         for (int i = 0; i < stars.length; i++) {
             stars[i] = new Star(atlas);
         }
+        ship = new MainShip(atlas);
     }
 
     @Override
@@ -35,6 +39,8 @@ public class GameScreen extends BaseScreen {
         draw();
     }
 
+
+
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
@@ -42,6 +48,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.resize(worldBounds);
         }
+        ship.resize(worldBounds);
     }
 
     @Override
@@ -55,6 +62,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.update(delta);
         }
+        ship.update(delta);
     }
 
     private void draw() {
@@ -64,7 +72,12 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.draw(batch);
         }
+        ship.draw(batch);
         batch.end();
+    }
+    @Override
+    public boolean touchDown(Vector2 touch, int pointer, int button) {
+       return ship.touchDown(touch, pointer, button);
     }
 }
 
