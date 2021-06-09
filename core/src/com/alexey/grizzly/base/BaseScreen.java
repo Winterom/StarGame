@@ -1,5 +1,6 @@
 package com.alexey.grizzly.base;
 
+
 import com.alexey.grizzly.math.MatrixUtils;
 import com.alexey.grizzly.math.Rect;
 import com.badlogic.gdx.Gdx;
@@ -17,7 +18,7 @@ public class BaseScreen implements Screen, InputProcessor {
     protected SpriteBatch batch;
 
     private Rect screenBounds;
-    private Rect worldBounds;
+    protected Rect worldBounds;
     private Rect glBounds;
 
     private Matrix4 worldToGl;
