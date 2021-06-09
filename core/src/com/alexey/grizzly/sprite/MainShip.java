@@ -3,7 +3,9 @@ package com.alexey.grizzly.sprite;
 import com.alexey.grizzly.base.Sprite;
 import com.alexey.grizzly.math.Rect;
 import com.alexey.grizzly.pool.BulletPool;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -28,13 +30,19 @@ public class MainShip extends Sprite {
     private TextureRegion bulletRegion;
     private Vector2 bulletV;
     private Vector2 bulletPos;
+    private Sound soundBullet;
+    private float timeSeconds = 0f;
+    private float period = 0.5f;
 
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound soundBullet) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         this.bulletV = new Vector2(0, 0.5f);
         this.bulletPos = new Vector2();
+        this.soundBullet = soundBullet;
+
+
     }
 
     @Override
@@ -61,6 +69,11 @@ public class MainShip extends Sprite {
 //        if (getRight() < worldBounds.getLeft()) {
 //            setLeft(worldBounds.getRight());
 //        }
+        timeSeconds +=Gdx.graphics.getDeltaTime();
+        if(timeSeconds > period){
+            timeSeconds-=period;
+            shoot();
+        }
     }
 
     @Override
@@ -160,5 +173,6 @@ public class MainShip extends Sprite {
         Bullet bullet = bulletPool.obtain();
         bulletPos.set(pos.x, pos.y + getHalfHeight());
         bullet.set(this, bulletRegion, bulletPos, bulletV, worldBounds, 1, 0.01f);
+        soundBullet.play();
     }
 }
