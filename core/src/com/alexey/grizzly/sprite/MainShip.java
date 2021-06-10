@@ -55,6 +55,7 @@ public class MainShip extends Ship {
             setLeft(worldBounds.getLeft());
             stop();
         }
+
 //        if (getLeft() > worldBounds.getRight()) {
 //            setRight(worldBounds.getLeft());
 //        }

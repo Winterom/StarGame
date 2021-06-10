@@ -5,6 +5,8 @@ import com.alexey.grizzly.math.Rect;
 import com.alexey.grizzly.pool.BulletPool;
 import com.alexey.grizzly.pool.EnemyPool;
 import com.alexey.grizzly.sprite.Background;
+import com.alexey.grizzly.sprite.Bullet;
+import com.alexey.grizzly.sprite.EnemyShip;
 import com.alexey.grizzly.sprite.MainShip;
 import com.alexey.grizzly.sprite.Star;
 import com.alexey.grizzly.util.EnemyEmitter;
@@ -118,8 +120,29 @@ public class GameScreen extends BaseScreen {
         bulletPool.updateActiveSprites(delta);
         enemyPool.updateActiveSprites(delta);
         enemyEmitter.generate(delta);
+        //столкнулись ли с нами
+        for (EnemyShip enemyShip : enemyPool.getActiveObjects()) {
+            if (!mainShip.isOutside(enemyShip)) {
+                System.out.println("bubuh!!!!");
+                enemyShip.destroy();
+                if (mainShip.haveDamage(enemyShip.getHp())) {//урон на сумму остатка здоровья коробля противника
+                    mainShip.destroy();
+                    System.out.println("наш корабль уничтожен");
+                }
+            }
+        }
+        //получил ли урон корабль противника
+        for (Bullet bullet : bulletPool.getActiveObjects()) {
+            for (EnemyShip enemyShip : enemyPool.getActiveObjects()) {
+                if (!enemyShip.isOutside(bullet)) {
+                    if (enemyShip.haveDamage(bullet.getDamage())){
+                       enemyShip.destroy();
+                    }
+                    bullet.destroy();
+                }
+            }
+        }
     }
-
     private void freeAllDestroyed() {
         bulletPool.freeAllDestroyed();
         enemyPool.freeAllDestroyed();

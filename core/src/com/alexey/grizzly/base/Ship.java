@@ -47,4 +47,13 @@ public class Ship extends Sprite {
         bullet.set(this, bulletRegion, bulletPos, bulletV, worldBounds, damage, bulletHeight);
         bulletSound.play();
     }
+    //получение урона кораблем
+    public boolean haveDamage(int damageEnemy){
+        hp = hp-damageEnemy;
+        return hp <= 0;
+    }
+
+    public int getHp() {
+        return hp;
+    }
 }
