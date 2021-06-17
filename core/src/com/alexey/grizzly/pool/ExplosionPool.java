@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 
-
 public class ExplosionPool extends SpritesPool<Explosion> {
 
     private final TextureAtlas atlas;

@@ -8,6 +8,7 @@ import com.alexey.grizzly.pool.ExplosionPool;
 import com.alexey.grizzly.sprite.Background;
 import com.alexey.grizzly.sprite.Bullet;
 import com.alexey.grizzly.sprite.EnemyShip;
+
 import com.alexey.grizzly.sprite.GameOver;
 import com.alexey.grizzly.sprite.MainShip;
 import com.alexey.grizzly.sprite.Star;
@@ -47,6 +48,7 @@ public class GameScreen extends BaseScreen {
 
     private EnemyEmitter enemyEmitter;
     private State state;
+
     @Override
     public void show() {
         super.show();
@@ -141,6 +143,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.update(delta);
         }
+
         explosionPool.updateActiveSprites(delta);
 
         if (state == State.PLAYING) {
@@ -188,7 +191,6 @@ public class GameScreen extends BaseScreen {
         if (mainShip.isDestroyed()) {
             state = State.GAME_OVER;
         }
-    }
 
     private void freeAllDestroyed() {
         bulletPool.freeAllDestroyed();
