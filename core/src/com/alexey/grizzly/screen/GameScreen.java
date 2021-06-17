@@ -6,6 +6,9 @@ import com.alexey.grizzly.pool.BulletPool;
 import com.alexey.grizzly.sprite.Background;
 import com.alexey.grizzly.sprite.MainShip;
 import com.alexey.grizzly.sprite.Star;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -23,6 +26,8 @@ public class GameScreen extends BaseScreen {
 
     private BulletPool bulletPool;
     private MainShip mainShip;
+    private Music music;
+    private Sound soundBullet;
 
     @Override
     public void show() {
@@ -35,7 +40,11 @@ public class GameScreen extends BaseScreen {
             stars[i] = new Star(atlas);
         }
         bulletPool = new BulletPool();
-        mainShip = new MainShip(atlas, bulletPool);
+        soundBullet = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
+        mainShip = new MainShip(atlas, bulletPool, soundBullet);
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+        music.setLooping(true);
+        music.play();
     }
 
     @Override
@@ -61,6 +70,7 @@ public class GameScreen extends BaseScreen {
         bg.dispose();
         atlas.dispose();
         bulletPool.dispose();
+        soundBullet.dispose();
     }
 
     @Override
@@ -93,6 +103,7 @@ public class GameScreen extends BaseScreen {
         }
         mainShip.update(delta);
         bulletPool.updateActiveSprites(delta);
+
     }
 
     private void freeAllDestroyed() {
