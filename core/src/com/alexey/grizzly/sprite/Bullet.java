@@ -44,7 +44,6 @@ public class Bullet extends Sprite {
         }
     }
 
-
     public int getDamage() {
         return damage;
     }
@@ -53,4 +52,3 @@ public class Bullet extends Sprite {
         return owner;
     }
 }
-

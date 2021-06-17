@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class Sprite extends Rect {
+
     protected float angle;
     protected float scale = 1;
     protected TextureRegion[] regions;
