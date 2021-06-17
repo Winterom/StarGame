@@ -12,6 +12,9 @@ public class Sprite extends Rect {
     protected float scale = 1;
     protected TextureRegion[] regions;
     protected int frame;
+
+
+
     protected boolean destroyed;
 
     public Sprite() {

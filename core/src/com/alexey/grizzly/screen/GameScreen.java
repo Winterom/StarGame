@@ -11,6 +11,7 @@ import com.alexey.grizzly.sprite.EnemyShip;
 
 import com.alexey.grizzly.sprite.GameOver;
 import com.alexey.grizzly.sprite.MainShip;
+import com.alexey.grizzly.sprite.NewGame;
 import com.alexey.grizzly.sprite.Star;
 import com.alexey.grizzly.util.EnemyEmitter;
 import com.badlogic.gdx.Gdx;
@@ -35,6 +36,7 @@ public class GameScreen extends BaseScreen {
     private Background background;
     private Star[] stars;
     private GameOver gameOver;
+    private NewGame newGame;
 
     private BulletPool bulletPool;
     private EnemyPool enemyPool;
@@ -72,8 +74,12 @@ public class GameScreen extends BaseScreen {
         music.setLooping(true);
         music.play();
         state = State.PLAYING;
+        newGame = new NewGame(atlas, this);
     }
-
+    public void newGame(){
+        state = State.PLAYING;
+        mainShip.flushDestroy();
+    }
     @Override
     public void render(float delta) {
         update(delta);
@@ -91,6 +97,7 @@ public class GameScreen extends BaseScreen {
         }
         mainShip.resize(worldBounds);
         gameOver.resize(worldBounds);
+        newGame.resize(worldBounds);
     }
 
     @Override
@@ -127,6 +134,8 @@ public class GameScreen extends BaseScreen {
     public boolean touchDown(Vector2 touch, int pointer, int button) {
         if (state == State.PLAYING) {
             mainShip.touchDown(touch, pointer, button);
+        }else if(state==State.GAME_OVER){
+            newGame.touchDown(touch,pointer,button);
         }
         return false;
     }
@@ -135,10 +144,12 @@ public class GameScreen extends BaseScreen {
     public boolean touchUp(Vector2 touch, int pointer, int button) {
         if (state == State.PLAYING) {
             mainShip.touchUp(touch, pointer, button);
+        } else if (state == State.GAME_OVER) {
+            newGame.touchUp(touch, pointer, button);
+
         }
         return false;
     }
-
     private void update(float delta) {
         for (Star star : stars) {
             star.update(delta);
@@ -191,7 +202,7 @@ public class GameScreen extends BaseScreen {
         if (mainShip.isDestroyed()) {
             state = State.GAME_OVER;
         }
-
+    }
     private void freeAllDestroyed() {
         bulletPool.freeAllDestroyed();
         enemyPool.freeAllDestroyed();
@@ -211,6 +222,7 @@ public class GameScreen extends BaseScreen {
             enemyPool.drawActiveSprites(batch);
         } else {
             gameOver.draw(batch);
+            newGame.draw(batch);
         }
         explosionPool.drawActiveSprites(batch);
         batch.end();
