@@ -9,6 +9,7 @@ import com.alexey.grizzly.sprite.Background;
 import com.alexey.grizzly.sprite.Bullet;
 import com.alexey.grizzly.sprite.EnemyShip;
 
+import com.alexey.grizzly.sprite.GameOver;
 import com.alexey.grizzly.sprite.MainShip;
 import com.alexey.grizzly.sprite.Star;
 import com.alexey.grizzly.util.EnemyEmitter;
@@ -143,7 +144,54 @@ public class GameScreen extends BaseScreen {
             star.update(delta);
         }
 
+        explosionPool.updateActiveSprites(delta);
+
+        if (state == State.PLAYING) {
+            mainShip.update(delta);
+            bulletPool.updateActiveSprites(delta);
+            enemyPool.updateActiveSprites(delta);
+            enemyEmitter.generate(delta);
+        }
     }
+
+    private void checkCollisions() {
+        List<EnemyShip> enemyShipList = enemyPool.getActiveObjects();
+        for (EnemyShip enemyShip : enemyShipList) {
+            if (enemyShip.isDestroyed()) {
+                continue;
+            }
+            float minDist = enemyShip.getHalfWidth() + mainShip.getHalfWidth();
+            if (enemyShip.pos.dst(mainShip.pos) < minDist) {
+                enemyShip.destroy();
+                mainShip.damage(enemyShip.getDamage() * 2);
+            }
+        }
+        List<Bullet> bulletList = bulletPool.getActiveObjects();
+        for (Bullet bullet : bulletList) {
+            if (bullet.isDestroyed()) {
+                continue;
+            }
+            if (bullet.getOwner() == mainShip) {
+                for (EnemyShip enemyShip : enemyShipList) {
+                    if (enemyShip.isDestroyed()) {
+                        continue;
+                    }
+                    if (enemyShip.isBulletCollision(bullet)) {
+                        enemyShip.damage(bullet.getDamage());
+                        bullet.destroy();
+                    }
+                }
+            } else {
+                if (mainShip.isBulletCollision(bullet)) {
+                    mainShip.damage(bullet.getDamage());
+                    bullet.destroy();
+                }
+            }
+        }
+        if (mainShip.isDestroyed()) {
+            state = State.GAME_OVER;
+        }
+
     private void freeAllDestroyed() {
         bulletPool.freeAllDestroyed();
         enemyPool.freeAllDestroyed();

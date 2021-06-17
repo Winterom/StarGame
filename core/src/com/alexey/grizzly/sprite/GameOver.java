@@ -4,8 +4,6 @@ import com.alexey.grizzly.base.Sprite;
 import com.alexey.grizzly.math.Rect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-
-
 public class GameOver extends Sprite {
 
     private static final float HEIGHT = 0.08f;
