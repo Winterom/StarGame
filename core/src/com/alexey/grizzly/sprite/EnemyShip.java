@@ -3,14 +3,16 @@ package com.alexey.grizzly.sprite;
 import com.alexey.grizzly.base.Ship;
 import com.alexey.grizzly.math.Rect;
 import com.alexey.grizzly.pool.BulletPool;
+import com.alexey.grizzly.pool.ExplosionPool;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class EnemyShip extends Ship {
 
-    public EnemyShip(Rect worldBounds, BulletPool bulletPool, Sound bulletSound) {
+    public EnemyShip(Rect worldBounds, ExplosionPool explosionPool, BulletPool bulletPool, Sound bulletSound) {
         this.worldBounds = worldBounds;
+        this.explosionPool = explosionPool;
         this.bulletPool = bulletPool;
         this.bulletSound = bulletSound;
         v0 = new Vector2();
@@ -54,5 +56,14 @@ public class EnemyShip extends Ship {
         setHeightProportion(height);
         this.hp = hp;
         v.set(0, -0.3f);
+    }
+
+    public boolean isBulletCollision(Rect bullet) {
+        return !(
+                bullet.getRight() < getLeft()
+                        || bullet.getLeft() > getRight()
+                        || bullet.getBottom() > getTop()
+                        || bullet.getTop() < pos.y
+        );
     }
 }

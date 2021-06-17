@@ -3,6 +3,7 @@ package com.alexey.grizzly.sprite;
 import com.alexey.grizzly.base.Ship;
 import com.alexey.grizzly.math.Rect;
 import com.alexey.grizzly.pool.BulletPool;
+import com.alexey.grizzly.pool.ExplosionPool;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -21,8 +22,9 @@ public class MainShip extends Ship {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound bulletSound) {
+    public MainShip(TextureAtlas atlas, ExplosionPool explosionPool, BulletPool bulletPool, Sound bulletSound) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
+        this.explosionPool = explosionPool;
         this.bulletPool = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         this.bulletSound = bulletSound;
@@ -62,6 +64,15 @@ public class MainShip extends Ship {
 //        if (getRight() < worldBounds.getLeft()) {
 //            setLeft(worldBounds.getRight());
 //        }
+    }
+
+    public boolean isBulletCollision(Rect bullet) {
+        return !(
+                bullet.getRight() < getLeft()
+                        || bullet.getLeft() > getRight()
+                        || bullet.getBottom() > pos.y
+                        || bullet.getTop() < getBottom()
+        );
     }
 
     @Override
