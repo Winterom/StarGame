@@ -79,8 +79,5 @@ public class Ship extends Sprite {
         bulletSound.play();
     }
 
-    private void boom() {
-        Explosion explosion = explosionPool.obtain();
-        explosion.set(this.pos, getHeight());
-    }
+    
 }
