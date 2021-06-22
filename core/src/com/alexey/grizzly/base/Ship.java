@@ -84,5 +84,8 @@ public class Ship extends Sprite {
         explosion.set(this.pos, getHeight());
     }
 
+    public void setBulletPos(Vector2 bulletPos) {
+        this.bulletPos.set(bulletPos);
+    }
 }
 
