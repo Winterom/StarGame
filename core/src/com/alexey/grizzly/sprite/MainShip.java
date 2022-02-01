@@ -22,6 +22,7 @@ public class MainShip extends Ship {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
+
     public MainShip(TextureAtlas atlas, ExplosionPool explosionPool, BulletPool bulletPool, Sound bulletSound) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.explosionPool = explosionPool;
@@ -35,9 +36,12 @@ public class MainShip extends Ship {
         reloadInterval = RELOAD_INTERVAL;
         bulletHeight = 0.01f;
         damage = 1;
-        hp = 100;
+        hp = 10;
     }
 
+    public void fullHp(){
+        hp=10;
+    }
     @Override
     public void resize(Rect worldBounds) {
         this.worldBounds = worldBounds;
@@ -57,12 +61,6 @@ public class MainShip extends Ship {
             setLeft(worldBounds.getLeft());
             stop();
         }
-//        if (getLeft() > worldBounds.getRight()) {
-//            setRight(worldBounds.getLeft());
-//        }
-//        if (getRight() < worldBounds.getLeft()) {
-//            setLeft(worldBounds.getRight());
-//        }
     }
 
     public boolean isBulletCollision(Rect bullet) {
